@@ -1,0 +1,59 @@
+service: training-module-backend
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+functions:
+  uploadVideo:
+    handler: functions/handler.uploadVideo
+    events:
+      - http:
+          path: /modules/upload
+          method: post
+          cors: true
+  saveMetadata:
+    handler: functions/handler.saveMetadata
+    events:
+      - http:
+          path: /modules
+          method: post
+          cors: true
+  getModules:
+    handler: functions/handler.getModules
+    events:
+      - http:
+          path: /modules
+          method: get
+          cors: true
+  trackAnalytics:
+    handler: functions/handler.trackAnalytics
+    events:
+      - http:
+          path: /modules/{id}/analytics
+          method: post
+          cors: true
+resources:
+  Resources:
+    TrainingModulesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TrainingModules
+        AttributeDefinitions:
+          - AttributeName: moduleId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: moduleId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    VideoBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: training-module-videos
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders: ['*']
+              AllowedMethods: ['GET', 'PUT', 'POST']
+              AllowedOrigins: ['http://localhost:5173', 'https://<frontend-domain>']
+              MaxAge: 3000
