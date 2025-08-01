@@ -26,6 +26,8 @@ Serverless-Training-Module-Generator/
 │   ├── app.py
 │   └── requirements.txt
 ├── designs/                    # Figma design files (not included in script)
+├── venv/                       # Python virtual environment
+├── .gitignore
 └── README.md
 ```
 
@@ -50,7 +52,8 @@ Serverless-Training-Module-Generator/
 - Git (for manual repository management)
 
 ### Frontend Setup (SvelteKit)
-1. Install dependencies from the project root:
+All commands are run from the project root:
+1. Install dependencies:
    ```bash
    npm install --prefix frontend
    ```
@@ -64,31 +67,37 @@ Serverless-Training-Module-Generator/
    ```
 
 ### Backend Setup (AWS Lambda)
-1. Install dependencies from the project root:
+All commands are run from the project root:
+1. Install dependencies:
    ```bash
    npm install --prefix backend
    ```
-2. Deploy to AWS from the project root:
+2. Deploy to AWS:
    ```bash
    npx serverless deploy --config backend/serverless.yml
    ```
 3. Update `frontend/src/lib/api.ts` with the API Gateway URL from the deployment output.
 
 ### Streamlit Setup
-1. Create and activate a virtual environment from the project root:
+All commands are run from the project root:
+1. Create and activate a virtual environment:
    ```bash
-   python3 -m venv streamlit/venv
-   source streamlit/venv/bin/activate  # On Windows: streamlit\venv\Scripts\activate
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
-2. Install dependencies:
+2. Upgrade pip (recommended):
+   ```bash
+   pip install --upgrade pip
+   ```
+3. Install dependencies:
    ```bash
    pip install -r streamlit/requirements.txt
    ```
-3. Run the Streamlit app:
+4. Run the Streamlit app:
    ```bash
    streamlit run streamlit/app.py
    ```
-4. Enter the password "12345" to access the dashboard (WARNING: This is insecure; consider using environment variables for production).
+5. Enter the password "12345" to access the dashboard (WARNING: This is insecure; consider using environment variables for production).
 
 ### AWS Configuration
 1. Ensure the S3 bucket `training-module-videos` and DynamoDB table `TrainingModules` (with `moduleId` as partition key) are created via the `serverless.yml` deployment.

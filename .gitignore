@@ -5,7 +5,7 @@ frontend/dist/
 frontend/build/
 
 # Python
-streamlit/venv/
+venv/
 streamlit/*.pyc
 streamlit/__pycache__/
 
